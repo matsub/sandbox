@@ -1,0 +1,36 @@
+--- origin/greeting.py	2015-10-10 15:06:14.000000000 +0900
++++ clone/greeting.py	2015-10-10 15:23:00.000000000 +0900
+@@ -1,8 +1,11 @@
+ #!/usr/bin/env python3
+ 
+ class Who(object):
++    def __init__(self, name):
++        self.name = name
++
+     def greeting(self):
+-        print('Hello my friend.')
++        print('Hello %s.' % self.name)
+ 
+ 
+ def a():
+@@ -30,7 +33,7 @@
+ 
+ 
+ def g():
+-    print('null')
++    print('null null')
+ 
+ 
+ def h():
+@@ -38,5 +41,5 @@
+ 
+ 
+ if __name__ == '__main__':
+-    who = Who()
++    who = Who('World')
+     who.greeting()
+--- origin/hello.txt	2015-10-10 15:05:06.000000000 +0900
++++ clone/hello.txt	2015-10-10 15:23:00.000000000 +0900
+@@ -1 +1 @@
+-Hello, Warld!
++HELLO, WARLD!
