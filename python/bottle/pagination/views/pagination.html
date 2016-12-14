@@ -1,0 +1,17 @@
+<ul>
+	{% for user in users %}
+	<li>{{ user.id }}: {{ user.name }}</li>
+	{% endfor %}
+</ul>
+<nav>
+{% if page > 0%}
+	{% if page == 1 %}
+		<a href="./{{ query_string }}">prev</a>
+	{% else %}
+		<a href="{{ page-1 }}{{ query_string }}">prev</a>
+	{% endif %}
+{% endif %}
+{% if has_next %}
+	<a href="{{ page+1 }}{{ query_string }}">next</a>
+{% endif %}
+</nav>
