@@ -35,7 +35,7 @@ def jedict():
 if __name__ == '__main__':
     conn = sqlite3.connect('dictionary.db')
     c = conn.cursor()
-    c.execute("CREATE TABLE dictionary (word, mean)")
+    c.execute("CREATE TABLE IF NOT EXISTS dictionary (word, mean)")
 
     for word, mean in ejdict():
         c.execute("INSERT INTO dictionary VALUES (?, ?)", (word, mean))
