@@ -1,16 +1,16 @@
 import os
-import bottle
 
 
 class Label:
+
     def __init__(self, fname):
-        self.dir = os.path.dirname( os.path.abspath(fname) )
+        self.dir = os.path.dirname(os.path.abspath(fname))
         self.template_lookup = set(['./', './views/'])
         self.filters = {}
         self.secret_key = None
 
     def append_template_paths(self, dirs):
-        template_lookup = ( os.path.join(self.dir, dir) for dir in dirs )
+        template_lookup = (os.path.join(self.dir, dir) for dir in dirs)
         self.template_lookup.add(*template_lookup)
 
     def append_filters(self, filters):
@@ -26,7 +26,6 @@ class Label:
                     kwargs['filters'] = self.filters
                 kwargs['template_adapter'] = bottle.Jinja2Template
                 kwargs['template_lookup'] = self.template_lookup
-                print('!!!!!!!!!!!!!!!!!!',kwargs['template_lookup'])
                 return f(*args, **kwargs)
             return wrapper
         bottle.template = template(bottle.template)
@@ -35,7 +34,7 @@ class Label:
         def auto_decode(f):
             def wrapper(*args, **kwargs):
                 if self.secret_key and 'secret' not in kwargs:
-                        kwargs['secret'] = self.secret_key
+                    kwargs['secret'] = self.secret_key
                 return f(*args, **kwargs)
             return wrapper
 
