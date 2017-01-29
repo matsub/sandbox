@@ -1,3 +1,6 @@
 [submodule "dictionary/EJDict"]
 	path = dictionary/EJDict
 	url = https://github.com/kujirahand/EJDict.git
+[submodule "docker/docker-learning"]
+	path = docker/docker-learning
+	url = https://github.com/suzuki-shunsuke/docker-learning.git
