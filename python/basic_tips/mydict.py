@@ -7,7 +7,7 @@ dic = {
 
 class MyDict(dict):
     def __init__(self, dic):
-        self.update(dic)
+        super().__init__(dic)
         for k, v in self.items():
             self.__setattr__(k, v)
 
