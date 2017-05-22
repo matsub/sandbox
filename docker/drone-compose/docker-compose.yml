@@ -1,0 +1,36 @@
+version: '2'
+
+services:
+  gogs:
+    image: gogs/gogs:0.11.4
+    ports:
+      - 3000:3000
+    volumes:
+      - ./gogs:/data
+    networks:
+      frontend:
+        ipv4_address: 172.16.1.33
+
+  drone:
+    image: drone/drone:0.6
+    ports:
+      - 8000:8000
+    volumes:
+      - ./drone:/var/lib/drone/
+    environment:
+      - DRONE_OPEN=true
+      - DRONE_GOGS=true
+      - DRONE_GOGS_URL=http://172.16.1.33:3000
+      - DRONE_GOGS_SKIP_VERIFY=true
+    networks:
+      frontend:
+        ipv4_address: 172.16.1.34
+
+
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24
