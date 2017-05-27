@@ -1,0 +1,2 @@
+alpine: apk add --update curl && rm -rf /var/cache/apk/*
+jessie: apt-get update && apt-get install -y curl
