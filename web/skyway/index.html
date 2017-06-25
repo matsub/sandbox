@@ -1,0 +1,24 @@
+<script src='https://cdn.skyway.io/skyway.min.js'></script>
+<script>
+    /*  Compatibility shim */
+    navigator.getUserMedia = (
+        navigator.getUserMedia
+        || navigator.webkitGetUserMedia
+        || navigator.mozGetUserMedia
+    )
+
+    /* constraints of the stream */
+    let constraints = {
+        audio: true,
+        video: false,
+    }
+
+    var peer = new Peer({key: '066bb110-71bd-4e74-aef1-f8dd6a7035c3'});
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then( stream => {
+            sfuRoom = this.peer.joinRoom('AwesomeRoom', {
+                mode: 'mesh',
+                stream: stream,
+            })
+        })
+</script>
