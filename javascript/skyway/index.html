@@ -13,12 +13,16 @@
         video: false,
     }
 
-    var peer = new Peer({key: '066bb110-71bd-4e74-aef1-f8dd6a7035c3'});
-    navigator.mediaDevices.getUserMedia(constraints)
-        .then( stream => {
-            sfuRoom = this.peer.joinRoom('AwesomeRoom', {
-                mode: 'mesh',
-                stream: stream,
+    var peer = new Peer({key: 'API_KEY'});
+    peer.on('open', function(id) {
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then( stream => {
+                room = peer.joinRoom('AwesomeRoom', {
+                    mode: 'mesh',
+                    stream: stream,
+                })
+                room.on('peerJoin', () => { console.log("foo") })
+                room.on('peerJoin', () => { console.log("bar") })
             })
-        })
+    });
 </script>
