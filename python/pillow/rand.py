@@ -10,16 +10,15 @@ from PIL import (
 
 
 def get_random_gray(is_dark):
-    lightness = 30 if is_dark else 100
+    lightness = 20 if is_dark else 95
     hsl = f'hsl(0, 0%, {lightness}%)'
     return ImageColor.getrgb(hsl)
 
 
-def get_random_rgb(is_dark):
-    pref = 50 if is_dark else 0
+def get_random_rgb(base_is_dark):
     hue = random.randint(0, 360)
     sat = random.randint(50, 100)
-    ltn = random.randint(20, 40) + pref
+    ltn = 80 if base_is_dark else 20
     hsl = f'hsl({hue}, {sat}%, {ltn}%)'
     return ImageColor.getrgb(hsl)
 
@@ -41,7 +40,7 @@ def generate_avatar(fmt='png'):
     draw = ImageDraw.Draw(im)
     for x in range(8):
         for y in range(8):
-            if random.randint(0, 2) == 0:
+            if random.randint(0, 3) == 0:
                 rect = get_rect(x, y, 8)
                 draw.rectangle(rect, fill=color)
 
