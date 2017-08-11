@@ -13,7 +13,7 @@ var splitter;
 var analyser, analyser2;
 var javascriptNode;
 // get the context from the canvas to draw on
-var ctx = document.querySelector("#canvas").get()[0].getContext("2d");
+var ctx = document.querySelector("#canvas").getContext("2d");
 // create a gradient for the fill. Note the strange
 // offset, since the gradient is calculated based on
 // the canvas, not the specific element we draw
@@ -24,7 +24,7 @@ gradient.addColorStop(0.25,'#ffff00');
 gradient.addColorStop(0,'#ffffff');
 // load the sound
 setupAudioNodes();
-loadSound("wagner-short.ogg");
+loadSound("fly-me-to-the-moon.ogg");
 function setupAudioNodes() {
   // setup a javascript node
   javascriptNode = context.createScriptProcessor(2048, 1, 1);
