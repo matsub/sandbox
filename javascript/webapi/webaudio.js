@@ -29,11 +29,11 @@ function setupAudioNodes() {
   analyser = context.createAnalyser();
   analyser.smoothingTimeConstant = 0.3;
   analyser.fftSize = 1024;
+
   // create a buffer source node
   sourceNode = context.createBufferSource();
-  // we use the javascript node to draw at a
-  // specific interval.
   analyser.connect(javascriptNode);
+
   // and connect to destination
   sourceNode.connect(context.destination);
 }
@@ -74,7 +74,6 @@ javascriptNode.onaudioprocess = function() {
   ctx.fillStyle=gradient;
   // create the meters
   ctx.fillRect(0,130-average,25,130);
-  ctx.fillRect(30,130-average2,25,130);
 }
 function getAverageVolume(array) {
   var values = 0;
