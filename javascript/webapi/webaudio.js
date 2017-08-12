@@ -1,9 +1,3 @@
-var context = new AudioContext();
-var audioBuffer;
-var sourceNode;
-var analyser;
-var javascriptNode;
-
 // get the context from the canvas to draw on
 var ctx = document.querySelector("#canvas").getContext("2d");
 
@@ -17,64 +11,96 @@ gradient.addColorStop(0.25,'#ffff00');
 gradient.addColorStop(0,'#ffffff');
 
 // load the sound
-setupAudioNodes();
-loadSound("fly-me-to-the-moon.ogg");
+var audio = getAudioNode();
+loadSound(audio, "fly-me-to-the-moon.ogg");
 
-function setupAudioNodes() {
+function getAudioNode() {
+  let context = new AudioContext();
+  let source, splitter, analyser;
+  let javascriptNode;
+
   // setup a javascript node
   javascriptNode = context.createScriptProcessor(2048, 1, 1);
+
   // connect to destination, else it isn't called
   javascriptNode.connect(context.destination);
-  // setup a analyzer
+
+  // setup a analyser
   analyser = context.createAnalyser();
   analyser.smoothingTimeConstant = 0.3;
   analyser.fftSize = 1024;
 
   // create a buffer source node
-  sourceNode = context.createBufferSource();
+  source = context.createBufferSource();
+  splitter = context.createChannelSplitter();
+
+  // connect the source to the analyser and the splitter
+  source.connect(splitter);
+
+  // connect one of the outputs from the splitter to
+  // the analyser
+  splitter.connect(analyser,0,0);
+
+  // connect the splitter to the javascriptnode
+  // we use the javascript node to draw at a
+  // specific interval.
   analyser.connect(javascriptNode);
 
+  // setup indicator
+  javascriptNode.onaudioprocess = setupIndicator(analyser)
+
   // and connect to destination
-  sourceNode.connect(context.destination);
+  source.connect(context.destination);
+
+  return {
+    context,
+    source,
+  }
 }
+
+
 // load the specified sound
-function loadSound(url) {
-  var request = new XMLHttpRequest();
+function loadSound(audio, url) {
+  let request = new XMLHttpRequest();
   request.open('GET', url, true);
   request.responseType = 'arraybuffer';
+
   // When loaded decode the data
   request.onload = function() {
     // decode the data
-    context.decodeAudioData(request.response, function(buffer) {
+    audio.context.decodeAudioData(request.response, function(buffer) {
       // when the audio is decoded play the sound
-      playSound(buffer);
-    }, onError);
+      audio.source.buffer = buffer;
+      audio.source.start(0);
+    }, console.log);
   }
+
   request.send();
 }
-function playSound(buffer) {
-  sourceNode.buffer = buffer;
-  sourceNode.start(0);
-}
-// log if an error occurs
-function onError(e) {
-  console.log(e);
-}
+
+
 // when the javascript node is called
-// we use information from the analyzer node
+// we use information from the analyser node
 // to draw the volume
-javascriptNode.onaudioprocess = function() {
-  // get the average for the first channel
-  var array =  new Uint8Array(analyser.frequencyBinCount);
-  analyser.getByteFrequencyData(array);
-  var average = getAverageVolume(array);
-  // clear the current state
-  ctx.clearRect(0, 0, 60, 130);
-  // set the fill style
-  ctx.fillStyle=gradient;
-  // create the meters
-  ctx.fillRect(0,130-average,25,130);
+function setupIndicator(analyser) {
+  return function() {
+    // get the average for the first channel
+    var array =  new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(array);
+    var average = getAverageVolume(array);
+
+    // clear the current state
+    ctx.clearRect(0, 0, 60, 130);
+
+    // set the fill style
+    ctx.fillStyle=gradient;
+
+    // create the meters
+    ctx.fillRect(0,130-average,25,130);
+  }
 }
+
+
 function getAverageVolume(array) {
   var values = 0;
   var average;
