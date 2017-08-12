@@ -1,7 +1,6 @@
 var context = new AudioContext();
 var audioBuffer;
 var sourceNode;
-var splitter;
 var analyser;
 var javascriptNode;
 
@@ -32,18 +31,9 @@ function setupAudioNodes() {
   analyser.fftSize = 1024;
   // create a buffer source node
   sourceNode = context.createBufferSource();
-  splitter = context.createChannelSplitter();
-  // connect the source to the analyser and the splitter
-  sourceNode.connect(splitter);
-  // connect one of the outputs from the splitter to
-  // the analyser
-  splitter.connect(analyser,0,0);
-  // connect the splitter to the javascriptnode
   // we use the javascript node to draw at a
   // specific interval.
   analyser.connect(javascriptNode);
-  // splitter.connect(context.destination,0,0);
-  // splitter.connect(context.destination,0,1);
   // and connect to destination
   sourceNode.connect(context.destination);
 }
