@@ -3,8 +3,8 @@ class Indicator {
     var ctx = canvas.getContext("2d");
     var gradient = ctx.createLinearGradient(0, 0, width, 0);
 
-    gradient.addColorStop(0,'#00ff00');
-    gradient.addColorStop(1,'#004400');
+    gradient.addColorStop(1,'#00ff00');
+    gradient.addColorStop(0,'#004400');
     ctx.fillStyle = gradient;
 
     this.width = width
