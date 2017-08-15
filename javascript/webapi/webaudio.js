@@ -30,31 +30,20 @@ loadSound(audio, "sample.ogg");
 function getAudioNode(indicator) {
   var context = new AudioContext();
 
-  // setup a script node
-  var scriptNode = context.createScriptProcessor(2048, 1, 1);
-  scriptNode.connect(context.destination);
-
   // setup a analyser
   var analyser = context.createAnalyser();
   analyser.smoothingTimeConstant = 0.3;
   analyser.fftSize = 1024;
   analyser.connect(context.destination);
 
-  // apply indicator
+  // setup a script node
+  var scriptNode = context.createScriptProcessor(2048, 1, 1);
   scriptNode.onaudioprocess = setupIndicator(indicator, analyser)
-
-  // create a buffer source node
-  var source = context.createBufferSource();
-  source.connect(analyser);
-
-  var gainNode = context.createGain();
-  source.connect(gainNode);
-  gainNode.connect(context.destination);
+  scriptNode.connect(analyser);
 
   return {
     context,
-    source,
-    gainNode
+    analyser,
   }
 }
 
@@ -65,11 +54,21 @@ function loadSound(audio, url) {
   .then(response => response.arrayBuffer())
   .then(buffer => {
     // decode the data
-    audio.context.decodeAudioData(buffer, decoded => {
-      // when the audio is decoded play the sound
-      audio.source.buffer = decoded;
-      audio.source.start(0);
-      audio.gainNode.gain.value = -0.9
+    audio.context.decodeAudioData(buffer)
+      .then(decoded => {
+      var source = audio.context.createBufferSource();
+      var gainNode = audio.context.createGain();
+
+      // setup buffer
+      source.buffer = decoded;
+      source.connect(audio.context.destination);
+
+      // setup gain
+      gainNode.gain.value = -0.9
+      gainNode.connect(audio.analyser);
+      source.connect(gainNode);
+
+      source.start(0);
     }, console.log);
   })
 }
