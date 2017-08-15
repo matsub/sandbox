@@ -25,7 +25,7 @@ var indicator = new Indicator(canvas, 120, 20)
 
 // load the sound
 var audio = getAudioNode(indicator);
-loadSound(audio, "fly-me-to-the-moon.ogg");
+loadSound(audio, "sample.ogg");
 
 function getAudioNode(indicator) {
   var context = new AudioContext();
