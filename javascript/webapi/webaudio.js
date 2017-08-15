@@ -1,20 +1,33 @@
-// get the context from the canvas to draw on
-var ctx = document.querySelector("#canvas").getContext("2d");
+class Indicator {
+  constructor(canvas, width, height) {
+    var ctx = canvas.getContext("2d");
+    var gradient = ctx.createLinearGradient(0, 0, width, 0);
 
-// create a gradient for the fill. Note the strange
-// offset, since the gradient is calculated based on
-// the canvas, not the specific element we draw
-var gradient = ctx.createLinearGradient(0,0,0,130);
-gradient.addColorStop(1,'#000000');
-gradient.addColorStop(0.75,'#ff0000');
-gradient.addColorStop(0.25,'#ffff00');
-gradient.addColorStop(0,'#ffffff');
+    gradient.addColorStop(0,'#00ff00');
+    gradient.addColorStop(1,'#004400');
+    ctx.fillStyle = gradient;
+
+    this.width = width
+    this.height = height
+    this.ctx = ctx
+  }
+
+  draw(strength) {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.fillRect(0, 0, strength, this.height);
+  }
+}
+
+
+// get the context from the canvas to draw on
+var canvas = document.querySelector("#canvas")
+var indicator = new Indicator(canvas, 120, 20)
 
 // load the sound
-var audio = getAudioNode();
+var audio = getAudioNode(indicator);
 loadSound(audio, "fly-me-to-the-moon.ogg");
 
-function getAudioNode() {
+function getAudioNode(indicator) {
   var context = new AudioContext();
 
   // setup a script node
@@ -28,7 +41,7 @@ function getAudioNode() {
   analyser.connect(context.destination);
 
   // apply indicator
-  scriptNode.onaudioprocess = setupIndicator(analyser)
+  scriptNode.onaudioprocess = setupIndicator(indicator, analyser)
 
   // create a buffer source node
   var source = context.createBufferSource();
@@ -62,20 +75,16 @@ function loadSound(audio, url) {
 }
 
 
-// when the javascript node is called
-// we use information from the analyser node
-// to draw the volume
-function setupIndicator(analyser) {
+function setupIndicator(indicator, analyser) {
+  var array =  new Uint8Array(analyser.frequencyBinCount);
+
   return function() {
     // get the average for the first channel
-    var array =  new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(array);
     var average = getAverageVolume(array);
 
-    // clear the current state
-    ctx.clearRect(0, 0, 60, 130);
-    ctx.fillStyle=gradient;
-    ctx.fillRect(0,130-average,25,130);
+    // draw indicator
+    indicator.draw(average)
   }
 }
 
