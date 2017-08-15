@@ -15,67 +15,50 @@ var audio = getAudioNode();
 loadSound(audio, "fly-me-to-the-moon.ogg");
 
 function getAudioNode() {
-  let context = new AudioContext();
-  let source, splitter, analyser;
-  let javascriptNode;
+  var context = new AudioContext();
 
-  // setup a javascript node
-  javascriptNode = context.createScriptProcessor(2048, 1, 1);
-
-  // connect to destination, else it isn't called
-  javascriptNode.connect(context.destination);
+  // setup a script node
+  var scriptNode = context.createScriptProcessor(2048, 1, 1);
+  scriptNode.connect(context.destination);
 
   // setup a analyser
-  analyser = context.createAnalyser();
+  var analyser = context.createAnalyser();
   analyser.smoothingTimeConstant = 0.3;
   analyser.fftSize = 1024;
+  analyser.connect(context.destination);
+
+  // apply indicator
+  scriptNode.onaudioprocess = setupIndicator(analyser)
 
   // create a buffer source node
-  source = context.createBufferSource();
-  splitter = context.createChannelSplitter();
+  var source = context.createBufferSource();
+  source.connect(analyser);
 
-  // connect the source to the analyser and the splitter
-  source.connect(splitter);
-
-  // connect one of the outputs from the splitter to
-  // the analyser
-  splitter.connect(analyser,0,0);
-
-  // connect the splitter to the javascriptnode
-  // we use the javascript node to draw at a
-  // specific interval.
-  analyser.connect(javascriptNode);
-
-  // setup indicator
-  javascriptNode.onaudioprocess = setupIndicator(analyser)
-
-  // and connect to destination
-  source.connect(context.destination);
+  var gainNode = context.createGain();
+  source.connect(gainNode);
+  gainNode.connect(context.destination);
 
   return {
     context,
     source,
+    gainNode
   }
 }
 
 
 // load the specified sound
 function loadSound(audio, url) {
-  let request = new XMLHttpRequest();
-  request.open('GET', url, true);
-  request.responseType = 'arraybuffer';
-
-  // When loaded decode the data
-  request.onload = function() {
+  fetch(url)
+  .then(response => response.arrayBuffer())
+  .then(buffer => {
     // decode the data
-    audio.context.decodeAudioData(request.response, function(buffer) {
+    audio.context.decodeAudioData(buffer, decoded => {
       // when the audio is decoded play the sound
-      audio.source.buffer = buffer;
+      audio.source.buffer = decoded;
       audio.source.start(0);
+      audio.gainNode.gain.value = -0.9
     }, console.log);
-  }
-
-  request.send();
+  })
 }
 
 
@@ -91,24 +74,13 @@ function setupIndicator(analyser) {
 
     // clear the current state
     ctx.clearRect(0, 0, 60, 130);
-
-    // set the fill style
     ctx.fillStyle=gradient;
-
-    // create the meters
     ctx.fillRect(0,130-average,25,130);
   }
 }
 
 
 function getAverageVolume(array) {
-  var values = 0;
-  var average;
-  var length = array.length;
-  // get all the frequency amplitudes
-  for (var i = 0; i < length; i++) {
-    values += array[i];
-  }
-  average = values / length;
-  return average;
+  var sum = array.reduce((a,b)=>a+b, 0)
+  return sum / array.length;
 }
