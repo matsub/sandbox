@@ -7,16 +7,17 @@ navigator.getUserMedia = (
 
 
 class Indicator {
-  constructor(canvas, width, height) {
+  constructor(canvas) {
+    this.width = canvas.width
+    this.height = canvas.height
+
     var ctx = canvas.getContext("2d");
-    var gradient = ctx.createLinearGradient(0, 0, width, 0);
+    var gradient = ctx.createLinearGradient(0, 0, this.width, 0);
 
     gradient.addColorStop(1,'#00ff00');
     gradient.addColorStop(0,'#004400');
     ctx.fillStyle = gradient;
 
-    this.width = width
-    this.height = height
     this.ctx = ctx
     this.ctx.lineWidth = 4
     this.ctx.strokeStyle = "#ffffff"
@@ -43,7 +44,7 @@ navigator.mediaDevices.getUserMedia(constraints)
   .then(stream => {
     var context = new AudioContext();
     var canvas = document.querySelector("#canvas")
-    var indicator = new Indicator(canvas, 120, 20)
+    var indicator = new Indicator(canvas)
 
     // setup a analyser
     var analyser = context.createAnalyser();
