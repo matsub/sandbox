@@ -1,12 +1,18 @@
 class Icon {
   constructor (canvas) {
     this.ctx = canvas.getContext('2d')
+    this.width = canvas.width
+    this.height = canvas.height
+  }
+
+  draw() {
+    this.ctx.clearRect(0, 0, this.width, this.height)
   }
 }
 
-class Speaker extends Icon {
+class Sound extends Icon {
   draw () {
-    this.ctx.clearRect(0, 0, 20, 20)
+    super.draw()
 
     // rect box
     this.ctx.fillRect(0, 5, 5, 10)
@@ -21,19 +27,20 @@ class Speaker extends Icon {
 }
 
 
-class Echo extends Icon {
+class Speaker extends Sound {
   draw (strength) {
-    this.ctx.clearRect(0, 0, 20, 20)
+    super.draw()
 
-    // first echo
     this.ctx.lineWidth = 3
     this.ctx.beginPath();
+    // first echo
     if (strength > 0) {
-      this.ctx.arc(0, 10, 2, Math.PI*0.5, Math.PI*-0.5, true)
+      this.ctx.arc(12.5, 10, 2, Math.PI*0.5, Math.PI*-0.5, true)
     }
+    // second echo
     if (strength > 0.5) {
-      this.ctx.moveTo(-20, 20)
-      this.ctx.arc(0, 10, 8, Math.PI*0.5, Math.PI*-0.5, true)
+      this.ctx.moveTo(12.5, 18)
+      this.ctx.arc(12.5, 10, 8, Math.PI*0.5, Math.PI*-0.5, true)
     }
     this.ctx.stroke()
   }
@@ -41,6 +48,4 @@ class Echo extends Icon {
 
 
 var speaker = new Speaker(document.getElementById('speaker'))
-var echo = new Echo(document.getElementById('echo'))
-speaker.draw()
-echo.draw(1)
+speaker.draw(1)
