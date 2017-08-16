@@ -32,25 +32,23 @@ var constraints = { video:false, audio:true }
 
 navigator.mediaDevices.getUserMedia(constraints)
   .then(stream => {
-    document.querySelector('audio').src = URL.createObjectURL(stream)
     var context = new AudioContext();
     var canvas = document.querySelector("#canvas")
     var indicator = new Indicator(canvas, 120, 20)
-
-    // setup a script node
-    var scriptNode = context.createScriptProcessor(2048, 1, 1);
-    scriptNode.connect(context.destination);
 
     // setup a analyser
     var analyser = context.createAnalyser();
     analyser.smoothingTimeConstant = 0.3;
     analyser.fftSize = 1024;
 
-    // apply indicator
+    // setup a script node
+    var scriptNode = context.createScriptProcessor(2048, 1, 1);
+    scriptNode.connect(context.destination);
     scriptNode.onaudioprocess = setupIndicator(indicator, analyser)
 
     var source = context.createMediaStreamSource(stream)
     source.connect(analyser)
+    document.querySelector('audio').src = URL.createObjectURL(stream)
   })
 
 

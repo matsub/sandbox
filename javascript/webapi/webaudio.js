@@ -10,11 +10,25 @@ class Indicator {
     this.width = width
     this.height = height
     this.ctx = ctx
+    this.ctx.lineWidth = 4
+    this.ctx.strokeStyle = "#ffffff"
   }
 
   draw(strength) {
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.fillRect(0, 0, strength, this.height);
+
+    drawStripeMask(this.ctx)
+  }
+}
+
+
+function drawStripeMask(ctx) {
+  for (let x=0; x < 120; x+=8) {
+    ctx.beginPath()
+    ctx.moveTo(x, 0)
+    ctx.lineTo(x, 20)
+    ctx.stroke()
   }
 }
 
