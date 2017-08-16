@@ -47,5 +47,5 @@ class Speaker extends Sound {
 }
 
 
-var speaker = new Speaker(document.getElementById('speaker'))
+var speaker = new Speaker(document.querySelector('div > canvas'))
 speaker.draw(1)

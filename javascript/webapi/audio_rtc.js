@@ -43,7 +43,7 @@ var constraints = { video:false, audio:true }
 navigator.mediaDevices.getUserMedia(constraints)
   .then(stream => {
     var context = new AudioContext();
-    var canvas = document.querySelector("#canvas")
+    var canvas = document.querySelector("canvas")
     var indicator = new Indicator(canvas)
 
     // setup a analyser
