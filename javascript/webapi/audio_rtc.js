@@ -18,11 +18,20 @@ class Indicator {
     this.width = width
     this.height = height
     this.ctx = ctx
+    this.ctx.lineWidth = 4
+    this.ctx.strokeStyle = "#ffffff"
   }
 
   draw(strength) {
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.ctx.fillRect(0, 0, strength, this.height);
+
+    for (let x=0; x < this.width; x+=8) {
+      this.ctx.beginPath()
+      this.ctx.moveTo(x, 0)
+      this.ctx.lineTo(x, this.height)
+      this.ctx.stroke()
+    }
   }
 }
 
