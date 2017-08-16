@@ -1,12 +1,3 @@
-var volume = document.querySelector('input')
-var audio = document.querySelector('audio')
-
-volume.addEventListener('input', e => {
-  audio.volume = volume.value
-  echo.draw(volume.value)
-})
-
-
 class Icon {
   constructor (canvas) {
     this.ctx = canvas.getContext('2d')
@@ -40,7 +31,7 @@ class Echo extends Icon {
     if (strength > 0) {
       this.ctx.arc(0, 10, 2, Math.PI*0.5, Math.PI*-0.5, true)
     }
-    if (strength > 0.4) {
+    if (strength > 0.5) {
       this.ctx.moveTo(-20, 20)
       this.ctx.arc(0, 10, 8, Math.PI*0.5, Math.PI*-0.5, true)
     }
@@ -52,4 +43,4 @@ class Echo extends Icon {
 var speaker = new Speaker(document.getElementById('speaker'))
 var echo = new Echo(document.getElementById('echo'))
 speaker.draw()
-echo.draw(0.5)
+echo.draw(1)
