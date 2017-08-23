@@ -1,24 +1,57 @@
 class Indicator {
   constructor(canvas, width, height) {
-    var ctx = canvas.getContext("2d");
-    var gradient = ctx.createLinearGradient(0, 0, width, 0);
+    this.width = canvas.width
+    this.height = canvas.height
 
-    gradient.addColorStop(1,'#00ff00');
-    gradient.addColorStop(0,'#004400');
-    ctx.fillStyle = gradient;
+    var ctx = canvas.getContext("2d")
+    var gradient = ctx.createLinearGradient(0, 0, this.width, 0)
 
-    this.width = width
-    this.height = height
+    gradient.addColorStop(1,'#00ff00')
+    gradient.addColorStop(0,'#004400')
+    ctx.fillStyle = gradient
+    ctx.lineWidth = 4
+    ctx.strokeStyle = "#ffffff"
+
     this.ctx = ctx
-    this.ctx.lineWidth = 4
-    this.ctx.strokeStyle = "#ffffff"
   }
 
   draw(strength) {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.ctx.fillRect(0, 0, strength, this.height);
+    this.ctx.clearRect(0, 0, this.width, this.height)
+    this.ctx.fillRect(0, 0, strength, this.height)
 
     drawStripeMask(this.ctx)
+  }
+
+  setup(analyser) {
+    var array =  new Uint8Array(analyser.frequencyBinCount)
+
+    return () => {
+      // get the average for the first channel
+      analyser.getByteFrequencyData(array)
+      var average = getAverageVolume(array)
+      this.draw(average)
+    }
+  }
+
+  mount(audioCtx, source) {
+    // setup a analyser
+    var analyser = audioCtx.createAnalyser()
+    analyser.smoothingTimeConstant = 0.3
+    analyser.fftSize = 1024
+
+    // setup a script node
+    var processor = audioCtx.createScriptProcessor(2048, 1, 1)
+    processor.onaudioprocess = this.setup(analyser)
+
+    var gainNode = audioCtx.createGain()
+    gainNode.gain.value = 0.1
+
+    source.connect(gainNode)
+    gainNode.connect(audioCtx.destination)
+
+    source.connect(analyser)
+    analyser.connect(processor)
+    processor.connect(audioCtx.destination)
   }
 }
 
@@ -33,76 +66,33 @@ function drawStripeMask(ctx) {
 }
 
 
-// get the context from the canvas to draw on
-var canvas = document.querySelector("#canvas")
-var indicator = new Indicator(canvas, 120, 20)
-
-// load the sound
-var audio = getAudioNode(indicator);
-loadSound(audio, "sample.ogg");
-
-function getAudioNode(indicator) {
-  var context = new AudioContext();
-
-  // setup a analyser
-  var analyser = context.createAnalyser();
-  analyser.smoothingTimeConstant = 0.3;
-  analyser.fftSize = 1024;
-  analyser.connect(context.destination);
-
-  // setup a script node
-  var scriptNode = context.createScriptProcessor(2048, 1, 1);
-  scriptNode.onaudioprocess = setupIndicator(indicator, analyser)
-  scriptNode.connect(analyser);
-
-  return {
-    context,
-    analyser,
-  }
+function getAverageVolume(array) {
+  var sum = array.reduce((a,b)=>a+b, 0)
+  return sum / array.length
 }
 
 
 // load the specified sound
-function loadSound(audio, url) {
-  fetch(url)
-  .then(response => response.arrayBuffer())
-  .then(buffer => {
-    // decode the data
-    audio.context.decodeAudioData(buffer)
-      .then(decoded => {
-      var source = audio.context.createBufferSource();
-      var gainNode = audio.context.createGain();
+async function loadSource(audioCtx, url) {
+  var response = await fetch(url)
+  var buffer = await response.arrayBuffer()
 
-      // setup buffer
-      source.buffer = decoded;
-      source.connect(audio.context.destination);
+  var decoded = await audioCtx.decodeAudioData(buffer)
+  var source = audioCtx.createBufferSource()
+  source.buffer = decoded
 
-      // setup gain
-      gainNode.gain.value = -0.9
-      gainNode.connect(audio.analyser);
-      source.connect(gainNode);
-
-      source.start(0);
-    }, console.log);
-  })
+  return source
 }
 
+async function playSoundWithIndicator(url) {
+  var canvas = document.querySelector("canvas")
+  var audioCtx = new AudioContext()
 
-function setupIndicator(indicator, analyser) {
-  var array =  new Uint8Array(analyser.frequencyBinCount);
+  var indicator = new Indicator(canvas)
+  var source = await loadSource(audioCtx, url)
 
-  return function() {
-    // get the average for the first channel
-    analyser.getByteFrequencyData(array);
-    var average = getAverageVolume(array);
-
-    // draw indicator
-    indicator.draw(average)
-  }
+  indicator.mount(audioCtx, source)
+  source.start(0)
 }
 
-
-function getAverageVolume(array) {
-  var sum = array.reduce((a,b)=>a+b, 0)
-  return sum / array.length;
-}
+playSoundWithIndicator("sample.ogg")
