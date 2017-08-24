@@ -7,8 +7,8 @@ navigator.getUserMedia = (
 
 const constraints = {
   video: {
-    width: 480,
-    height: 320
+    width: 360,
+    height: 240
   },
   audio: false
 }
