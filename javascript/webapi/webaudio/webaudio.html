@@ -1,0 +1,36 @@
+<!doctype html>
+<canvas id="canvas" width="120" height="20"></canvas>
+<div>
+    <svg width="25" height="20"></svg>
+    <input type="range" value="0.1" min="0" max="1" step="0.01">
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.3/svg.min.js"></script>
+<script src="Icon.js"></script>
+<script src="AudioIndicator.js"></script>
+<script src="webaudio.js"></script>
+<script>
+var audio = new Audio()
+
+var canvas = document.querySelector("canvas")
+var indicator = new Indicator(audio.context, canvas)
+
+var volume = new Volume(audio.context, 0.1)
+var speaker = new Speaker(document.querySelector('svg'))
+speaker.draw(1)
+
+audio.install(indicator)
+audio.install(volume)
+audio.play("sample.ogg")
+
+var volumeController = document.querySelector('input')
+volumeController.addEventListener('input', e => {
+  volume.value = volumeController.value
+  speaker.draw(volume.value)
+})
+</script>
+<style>
+div {
+  display: flex;
+}
+</style>

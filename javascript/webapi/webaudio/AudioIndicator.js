@@ -3,17 +3,8 @@ class Indicator {
     this.width = canvas.width
     this.height = canvas.height
 
-    var ctx = canvas.getContext("2d")
-    var gradient = ctx.createLinearGradient(0, 0, this.width, 0)
-
-    gradient.addColorStop(0,'#004400')
-    gradient.addColorStop(1,'#00ff00')
-    ctx.fillStyle = gradient
-    ctx.lineWidth = 4
-    ctx.strokeStyle = "#ffffff"
-
-    this.ctx = ctx
-    this.audioCtx = audioCtx
+    this.initCanvas(canvas)
+    this.initAnalyser(audioCtx)
   }
 
   draw(strength) {
@@ -29,9 +20,12 @@ class Indicator {
     }
   }
 
+  get node() {
+    return this.analyser
+  }
+
   setup(analyser) {
     var array =  new Uint8Array(analyser.frequencyBinCount)
-
     return () => {
       // get the average for the first channel
       analyser.getByteFrequencyData(array)
@@ -40,19 +34,33 @@ class Indicator {
     }
   }
 
-  get node() {
+  initCanvas(canvas) {
+    var ctx = canvas.getContext("2d")
+    var gradient = ctx.createLinearGradient(0, 0, this.width, 0)
+
+    gradient.addColorStop(0,'#004400')
+    gradient.addColorStop(1,'#00ff00')
+    ctx.fillStyle = gradient
+    ctx.lineWidth = 4
+    ctx.strokeStyle = "#ffffff"
+
+    this.ctx = ctx
+  }
+
+  initAnalyser(audioCtx) {
     // setup a analyser
-    var analyser = this.audioCtx.createAnalyser()
+    var analyser = audioCtx.createAnalyser()
     analyser.smoothingTimeConstant = 0.3
     analyser.fftSize = 1024
 
     // setup a script node
-    var processor = this.audioCtx.createScriptProcessor(2048, 1, 1)
+    var processor = audioCtx.createScriptProcessor(2048, 1, 1)
     processor.onaudioprocess = this.setup(analyser)
 
     analyser.connect(processor)
-    processor.connect(this.audioCtx.destination)
-    return analyser
+    processor.connect(audioCtx.destination)
+
+    this.analyser = analyser
   }
 }
 
