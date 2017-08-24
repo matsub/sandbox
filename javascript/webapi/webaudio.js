@@ -51,7 +51,6 @@ class Indicator {
 
     source.connect(analyser)
     analyser.connect(processor)
-    processor.connect(audioCtx.destination)
   }
 }
 
