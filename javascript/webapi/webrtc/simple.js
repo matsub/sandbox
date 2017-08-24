@@ -35,7 +35,7 @@ async function sugoi_kansuu(local, remote) {
   pc2.onicecandidate = iceNegotiation(pc1)
 
   // on got Stream
-  // pc2.ontrack = e => { video.srcObject = e.stream }
+  // pc2.ontrack = e => { remote.srcObject = e.streams[0] }
   pc2.onaddstream = e => { remote.srcObject = e.stream }
 
   // add tracks
