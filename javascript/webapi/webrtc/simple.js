@@ -36,9 +36,7 @@ async function sugoi_kansuu(local, remote) {
 
   // on got Stream
   // pc2.ontrack = e => { video.srcObject = e.stream }
-  pc2.onaddstream = e => {
-    remote.srcObject = e.stream
-  }
+  pc2.onaddstream = e => { remote.srcObject = e.stream }
 
   // add tracks
   var stream = await navigator.mediaDevices.getUserMedia(constraints)
