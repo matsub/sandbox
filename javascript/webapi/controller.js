@@ -45,7 +45,3 @@ class Speaker extends Sound {
     this.ctx.stroke()
   }
 }
-
-
-var speaker = new Speaker(document.querySelector('div > canvas'))
-speaker.draw(1)

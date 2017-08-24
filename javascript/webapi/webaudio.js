@@ -17,15 +17,12 @@ async function playSoundWithIndicator(url) {
   var indicator = new Indicator(audioCtx, canvas)
   var source = await loadSource(audioCtx, url)
 
-  source.connect(indicator.node)
-
   var gainNode = audioCtx.createGain()
   gainNode.gain.value = 0.1
 
+  source.connect(indicator.node)
   source.connect(gainNode)
   gainNode.connect(audioCtx.destination)
 
   source.start(0)
 }
-
-playSoundWithIndicator("sample.ogg")

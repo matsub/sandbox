@@ -1,19 +1,24 @@
 <!doctype html>
 <canvas id="canvas" width="120" height="20"></canvas>
-<br>
 <div>
-  <canvas width="25" height="20"></canvas>
-  <input type="range" value="1" min="0" max="1" step="0.05">
-  <audio autoplay></audio>
+    <svg width="25" height="20"></svg>
+    <input type="range" value="1" min="0" max="1" step="0.05">
 </div>
-<script src="audio_rtc.js"></script>
-<script src="controller.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.3/svg.min.js"></script>
+<script src="AudioIndicator.js"></script>
+<script src="webaudio-webrtc.js"></script>
+<script src="Icon.js"></script>
 <script>
-var volume = document.querySelector('div > input')
-var audio = document.querySelector('div > audio')
+var speaker = new Speaker(document.querySelector('svg'))
+speaker.draw(1)
 
+var canvas = document.querySelector("canvas")
+var audioCtx = new AudioContext();
+var voice = new Voice(audioCtx, canvas)
+
+var volume = document.querySelector('input')
 volume.addEventListener('input', e => {
-  audio.volume = volume.value
+  voice.volume = volume.value
   speaker.draw(volume.value)
 })
 </script>

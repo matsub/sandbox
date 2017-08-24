@@ -36,7 +36,7 @@ class Indicator {
       // get the average for the first channel
       analyser.getByteFrequencyData(array)
       var average = getAverageVolume(array)
-      this.draw(average)
+      this.draw(average*2)
     }
   }
 
