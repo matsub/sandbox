@@ -6,28 +6,25 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.6.3/svg.min.js"></script>
-<script src="Icon.js"></script>
 <script src="AudioIndicator.js"></script>
+<script src="Icon.js"></script>
+<script src="VolumeController.js"></script>
 <script src="webaudio.js"></script>
 <script>
-var audio = new Audio()
+var audioCtx = new AudioContext()
 
 var canvas = document.querySelector("canvas")
-var indicator = new Indicator(audio.context, canvas)
+var indicator = new Indicator(audioCtx, canvas)
 
-var volume = new Volume(audio.context, 0.1)
-var speaker = new Speaker(document.querySelector('svg'))
-speaker.draw(1)
+var controller = document.querySelector('div')
+var vc = new VolumeController(audioCtx, controller)
 
-audio.install(indicator)
-audio.install(volume)
-audio.play("sample.ogg")
-
-var volumeController = document.querySelector('input')
-volumeController.addEventListener('input', e => {
-  volume.value = volumeController.value
-  speaker.draw(volume.value)
-})
+loadSource(audioCtx, "sample.ogg")
+  .then(source => {
+    source.connect(indicator.node)
+    source.connect(vc.node)
+    source.start(0)
+  })
 </script>
 <style>
 div {
