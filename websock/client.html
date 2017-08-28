@@ -1,0 +1,6 @@
+<script>
+var ws = new WebSocket('ws://localhost:8001/')
+var sdp = 'hello, peer.'
+ws.onopen = e => { ws.send(sdp) }
+ws.onmessage = msg => { console.log(msg.data) }
+</script>
