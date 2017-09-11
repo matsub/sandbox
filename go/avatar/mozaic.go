@@ -9,21 +9,11 @@ import (
 	"time"
 )
 
-func RandColor(rnd *rand.Rand) color.Color {
-	// fuck fuck fuck fuck fuck fuck fuck fuck fuck fuck
-	r := uint8(rnd.Uint32() & 0xff)
-	g := uint8(rnd.Uint32() & 0xff)
-	b := uint8(rnd.Uint32() & 0xff)
-
-	return color.RGBA{r, g, b, 255}
+func randBool() bool {
+	return rand.Uint32()&1 == 1
 }
 
-func RandGray(rnd *rand.Rand) color.Color {
-	scale := uint8(rnd.Uint32() & 0xff)
-	return color.Gray{scale}
-}
-
-func PixRect(dot image.Point, scale int) image.Rectangle {
+func pointToRect(dot image.Point, scale int) image.Rectangle {
 	min := dot.Mul(scale)
 	max := dot.Add(image.Pt(1, 1)).Mul(scale)
 	return image.Rectangle{min, max}
@@ -37,15 +27,15 @@ func fillRect(img *image.RGBA, rect image.Rectangle, col color.Color) {
 	}
 }
 
-func Avatar(rnd *rand.Rand) *image.RGBA {
-	base := RandColor(rnd)
+func Mozaic(base, primary color.Color) *image.RGBA {
 	img := image.NewRGBA(image.Rect(0, 0, 64, 64))
 
-	fillRect(img, image.Rect(0, 0, 64, 64), RandGray(rnd))
+	fillRect(img, image.Rect(0, 0, 64, 64), base)
 	for y := 0; y < 8; y++ {
 		for x := 0; x < 8; x++ {
-			if flg := rnd.Uint32() & 1; flg != 0 {
-				fillRect(img, PixRect(image.Pt(x, y), 8), base)
+			if randBool() && randBool() {
+				rect := pointToRect(image.Pt(x, y), 8)
+				fillRect(img, rect, primary)
 			}
 		}
 	}
@@ -54,9 +44,12 @@ func Avatar(rnd *rand.Rand) *image.RGBA {
 }
 
 func main() {
-	src := rand.NewSource(time.Now().UTC().UnixNano())
-	rnd := rand.New(src)
-	img := Avatar(rnd)
+	rand.Seed(time.Now().UTC().UnixNano())
+	color := MonoColor{randBool()}
+
+	base := color.base()
+	primary := color.primary()
+	img := Mozaic(base, primary)
 
 	f, _ := os.Create("generated.png")
 	png.Encode(f, img)
