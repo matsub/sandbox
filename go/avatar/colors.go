@@ -1,4 +1,4 @@
-package main
+package avatar
 
 import (
 	"image/color"
@@ -73,7 +73,7 @@ type MonoColor struct {
 	isDark bool
 }
 
-func (col MonoColor) base() color.Color {
+func (col MonoColor) Base() color.Color {
 	var scale uint8
 	if col.isDark {
 		scale = 0xff
@@ -83,7 +83,7 @@ func (col MonoColor) base() color.Color {
 	return color.Gray{scale}
 }
 
-func (col MonoColor) primary() color.Color {
+func (col MonoColor) Primary() color.Color {
 	var scale uint16
 	if col.isDark {
 		scale = 0x3fff
@@ -96,4 +96,8 @@ func (col MonoColor) primary() color.Color {
 	l := float32(scale) / 0xffff
 
 	return HSL{h, s, l}
+}
+
+func Mono() MonoColor {
+	return MonoColor{randBool()}
 }

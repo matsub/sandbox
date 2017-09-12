@@ -1,12 +1,9 @@
-package main
+package avatar
 
 import (
 	"image"
 	"image/color"
-	"image/png"
 	"math/rand"
-	"os"
-	"time"
 )
 
 func randBool() bool {
@@ -41,17 +38,4 @@ func Mozaic(base, primary color.Color) *image.RGBA {
 	}
 
 	return img
-}
-
-func main() {
-	rand.Seed(time.Now().UTC().UnixNano())
-	color := MonoColor{randBool()}
-
-	base := color.base()
-	primary := color.primary()
-	img := Mozaic(base, primary)
-
-	f, _ := os.Create("generated.png")
-	png.Encode(f, img)
-	f.Close()
 }
