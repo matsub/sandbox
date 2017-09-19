@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  postgres:
+    image: postgres:9.3-alpine
+    ports:
+      - "5432:5432/tcp"
+    environment:
+      POSTGRES_PASSWORD: sandbox
+      POSTGRES_USER: sandbox
