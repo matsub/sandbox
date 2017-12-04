@@ -1,0 +1,7 @@
+#!/bin/sh
+subcommand="cmd-$1"
+shift
+
+if type "$subcommand" >/dev/null 2>&1 ; then
+    $subcommand "$@"
+fi
