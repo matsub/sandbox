@@ -1,20 +1,5 @@
-<head>
-    <meta charset="utf-8">
-    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-latest.js"></script>
-</head>
-
+<!DOCTYPE html>
 <body>
-    <video id="remote" autoplay></video>
-    <video id="local" autoplay></video>
-
-    <label for="videoSource">Video source: </label><select id="videoSource"></select>
-
-    <p>Your id: <span id="local-id">...</span></p>
-    <h3>Make a call</h3>
-    <form id="make-call" class="pure-form">
-        <input type="text" placeholder="Call user id..." id="callto-id">
-        <button href="#" class="pure-button pure-button-success" type="submit">Call</button>
-    </form>
-
-    <button id="end-call">End call</button>
+    <div id="app"></div>
+    <script src="./dist/build.js"></script>
 </body>
