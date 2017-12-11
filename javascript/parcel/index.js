@@ -1,1 +1,2 @@
-console.log("hello world")
+const vis = require("vis")
+console.log(vis)
