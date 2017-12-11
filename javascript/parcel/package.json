@@ -1,0 +1,11 @@
+{
+  "name": "visjs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "matsub",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "vis": "^4.21.0"
+  }
+}
