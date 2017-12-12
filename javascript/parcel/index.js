@@ -1,17 +1,17 @@
 const vis = require("vis")
 
 var nodes = new vis.DataSet([
-  {id: 1, label: "A"},
-  {id: 2, label: "B"},
-  {id: 3, label: "C"},
-  {id: 4, label: "D"},
-  {id: 5, label: "E"}
+  {id: 'a', label: "A"},
+  {id: 'b', label: "B"},
+  {id: 'c', label: "C"},
+  {id: 'd', label: "D"},
+  {id: 'e', label: "E"}
 ])
 var edges = new vis.DataSet([
-  {from: 1, to: 3},
-  {from: 1, to: 2},
-  {from: 2, to: 4},
-  {from: 2, to: 5}
+  {from: 'a', to: 'b'},
+  {from: 'a', to: 'c'},
+  {from: 'b', to: 'd'},
+  {from: 'b', to: 'e'}
 ])
 
 var container = document.getElementById('mynetwork')
@@ -23,5 +23,5 @@ var options = {
 }
 var network = new vis.Network(container, data, options)
 
-document.getElementById('add').onclick = evt => nodes.add({id: 6, label: "new"})
-document.getElementById('connect').onclick = evt => edges.add({from: 3, to: 4})
+document.getElementById('add').onclick = evt => nodes.add({id: 'f', label: "F"})
+document.getElementById('connect').onclick = evt => edges.add({from: 'e', to: 'd'})
