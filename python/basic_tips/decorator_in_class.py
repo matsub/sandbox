@@ -23,12 +23,11 @@ class C:
     def sum_of(self, x, y):
         return x + y
 
-    @l.deco
-    def diff_of(self, x, y):
-        return x - y
+    def see_instance(self):
+        return self.__class__.l.msg
 
 
 if __name__ == '__main__':
     c = C('whoaaaaaaaa')
     print(c.sum_of(3, 5))
-    print(c.diff_of(3, 5))
+    print(c.see_instance())
