@@ -5,7 +5,7 @@ import asyncio
 
 async def hello_world(loop):
     print('Hello')
-    await asyncio.sleep(5, loop=loop)
+    await asyncio.sleep(3, loop=loop)
     print('World')
     loop.stop()
 
@@ -13,7 +13,8 @@ async def hello_world(loop):
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     coroutine = hello_world(loop)
-    callback =  lambda: asyncio.ensure_future(coroutine)
-    loop.call_soon(callback)
-    loop.run_forever()
-    loop.close()
+    loop.run_until_complete(coroutine)
+    # callback =  lambda: asyncio.ensure_future(coroutine)
+    # loop.call_soon(callback)
+    # loop.run_forever()
+    # loop.close()
