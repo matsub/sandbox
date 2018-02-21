@@ -27,7 +27,27 @@ class C:
         return self.__class__.l.msg
 
 
+def decorator(f):
+    def wrapped(*args, **kwargs):
+        kwargs['extend'] = "whoaaaaaaaaa"
+        return f(*args, **kwargs)
+    return wrapped
+
+
+class D:
+    def __init__(self, value):
+        self.value = value
+
+    @decorator
+    def method(self, extend):
+        print(self.value)
+        print(extend)
+
+
 if __name__ == '__main__':
-    c = C('whoaaaaaaaa')
-    print(c.sum_of(3, 5))
-    print(c.see_instance())
+    # c = C('whoaaaaaaaa')
+    # print(c.sum_of(3, 5))
+    # print(c.see_instance())
+
+    d = D('foooooooooo')
+    d.method()
