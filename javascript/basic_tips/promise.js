@@ -4,8 +4,15 @@ function gp(x) {
   })
 }
 
+lsn = null
+
 async function af () {
-  console.log(await gp(10))
+  console.log(await new Promise(resolve => {
+    lsn = function() {
+      resolve(1000)
+    }
+  }))
 }
 
 af()
+// setTimeout(lsn, 1000)
