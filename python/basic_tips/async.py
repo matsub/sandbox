@@ -32,7 +32,7 @@ def call_sum_of():
     print(res)
 
 
-class AsyncInstance:
+class InvalidAsyncInstance:
     # !!! NOTE !!!
     # `__init__` cant be an async function 
     # because `async def` (also `asyncio.coroutine`) returns a coroutine object.
@@ -42,6 +42,19 @@ class AsyncInstance:
     # since `run_until_complete` is allowed.
     # !!! /NOTE !!!
     async def __init__(self, value):
+        await asyncio.sleep(2)
+        self.value = value
+
+    def twice(self):
+        return self.value * 2
+
+
+class AsyncInstance:
+    def __init__(self, value):
+        loop = asyncio.get_event_loop()
+        coroutine = asyncio.sleep(2)
+        print('running...')
+        loop.run_until_complete(coroutine)
         self.value = value
 
     def twice(self):
@@ -50,13 +63,11 @@ class AsyncInstance:
 
 def call_AsyncInstance():
     loop = asyncio.get_event_loop()
-    coroutine = AsyncInstance(12)
-    print('running...')
-    ai_instance = loop.run_until_complete(coroutine)
-    print(ai_instance.twice())
+    ai = AsyncInstance(12)
+    print(ai.twice())
 
 
 if __name__ == '__main__':
     # call_hello_world()
-    call_sum_of()
-    # call_AsyncInstance()
+    # call_sum_of()
+    call_AsyncInstance()
