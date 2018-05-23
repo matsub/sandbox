@@ -1,4 +1,3 @@
-<script>
 class A {
   constructor(value) {
     this.value = value
@@ -24,4 +23,3 @@ a.arrow_method().then(console.log)
 // >> 12
 a.func_method().then(console.log)
 // TypeError: Cannot read property 'value' of undefined
-</script>
