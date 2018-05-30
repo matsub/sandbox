@@ -1,28 +1,20 @@
-async function get_ip() {
-  var response = await fetch('http://ip.jsontest.com/')
-  var data = response.json()
-  return data
+// an async function can be awaited in an async function
+async function ping() {
+  let response = await fetch('https://script.google.com/macros/s/AKfycbylYt_CJN0OxcsaeTDnhFT-XIrxMiVdHSVBuCZOk_rRVSQrT7bU/exec')
+  return response.json()
 }
 
 class C {
-  constructor(val) {
-    this.val = val
-  }
-
+  // instance method can be the asynchronous!
   async fetch() {
-    var ip = await get_ip()
-    console.log(this.val)
-    return ip.ip
+    return await ping()
   }
 }
 
 async function f() {
-  var ip = await get_ip()
-  console.log(ip)
-
-  c = new C(10)
-  ip = await c.fetch()
-  console.log(ip)
+  c = new C()
+  console.log(await ping())
+  console.log(await c.fetch())
 }
 
 f()

@@ -4,14 +4,9 @@ class AsyncQueue {
     this._ignition = () => {}
   }
 
-  ignite () {
-    this._ignition()
-    this._ignition = () => {}
-  }
-
   enqueue (item) {
     this._queue.push(item)
-    this.ignite()
+    this._ignition()
   }
 
   async dequeue () {
