@@ -27,7 +27,7 @@ func createTokenString(alg string) string {
 	return tokenstring
 }
 
-func main() {
+func standard() {
 	// for example, server receive token string in request header.
 	tokenstring := createTokenString("HS256")
 	// This is that token string.
@@ -60,4 +60,33 @@ func main() {
 		log.Println("やべえ")
 	}
 	log.Println(token.Valid, user.ID, err)
+}
+
+func main() {
+	// standard()
+	// Token from another example.  This token is expired
+	var tokenString = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb28iOiJiYXIiLCJleHAiOjE1MDAwLCJpc3MiOiJ0ZXN0In0.HE7fK0xOQwFEr4WDgRWj4teRPZ6i3GLwD5YCm6Pwu_c"
+	tokenString = "foo"
+
+	if token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte("AllYourBase"), nil
+	}); err != nil {
+		log.Println(err)
+	} else {
+		if token.Valid {
+			log.Println("You look nice today")
+		} else if ve, ok := err.(*jwt.ValidationError); ok {
+			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+				log.Println("That's not even a token")
+			} else if ve.Errors&(jwt.ValidationErrorExpired|jwt.ValidationErrorNotValidYet) != 0 {
+				// Token is either expired or not
+				// active yet
+				log.Println("Timing is everything")
+			} else {
+				log.Println("Couldn't handle this token:", err)
+			}
+		} else {
+			log.Println("Couldn't handle this token:", err)
+		}
+	}
 }
