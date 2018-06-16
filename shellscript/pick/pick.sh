@@ -1,14 +1,11 @@
 #/bin/sh
-function menu {
+function pick {
     choice=0
-    menu=(
-    "First Option"
-    "Second Option"
-    "Third Option"
-    )
+    menu=$@
     tail=`expr ${#menu[@]} - 1`
-    printf "\e[32mChoose one\e[m\n"  >&2
-    for _ in $(seq 0 $tail);do echo "";done
+
+    printf "\e[32mChoose one\e[m\n" >&2
+    for _ in $(seq 0 $tail);do echo "" >&2;done
 
     while true; do
         printf "\e[${#menu[@]}A\e[m" >&2
@@ -35,11 +32,9 @@ function menu {
                 if [ $choice -gt 0 ]; then choice=`expr $choice - 1`; fi
                 ;;
             "")
-                echo ${menu[$choice]}
+                echo $choice
                 return
                 ;;
         esac
     done
 }
-
-menu
