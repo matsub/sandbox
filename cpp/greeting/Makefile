@@ -3,17 +3,29 @@ CXX := clang++
 INCLUDE := -I .
 CXXFLAGS := -W -Wall -O2 $(INCLUDE)
 
+TARGETS := $(wildcard src/*.cpp)
+TARGETS := $(notdir $(TARGETS))
+TARGETS := $(basename $(TARGETS))
+
+LIB_DIR := src/greeting
+LIB_TARGETS := $(wildcard $(LIB_DIR)/*.cpp)
+LIB_TARGETS := $(notdir $(LIB_TARGETS:.cpp=.o))
+LIB_TARGETS := $(addprefix lib/, $(LIB_TARGETS))
+
+
 # build
-.PHONY: hello
-hello: lib/hello.a
-	$(CXX) $(CXXFLAGS) -o bin/hello src/hello.cpp $<
+.PHONY: all
+all: $(TARGETS)
+$(TARGETS): %: lib/greeting.a
+	$(CXX) $(CXXFLAGS) -o bin/$@ src/$@.cpp $<
 
 # pattern rules
-lib/hello.a: lib/hello.o
+lib/greeting.a: $(LIB_TARGETS)
 	ar r $@ $^
 
-lib/hello.o: src/greeting/hello.cpp
+lib/%.o: $(LIB_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
 
 # subcommands
 .PHONY: clean
