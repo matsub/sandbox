@@ -1,0 +1,49 @@
+name:                church
+version:             0.1.0.0
+github:              "matsub/sandbox"
+license:             BSD3
+author:              "matsub"
+maintainer:          "matsub.rk@gmail.com"
+copyright:           "Copyright (c) 2018 matsub&lt;matsub.rk@gmail.com&gt;"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            playground
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/matsub/church#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+
+executables:
+  church-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - church
+
+tests:
+  church-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - church
+    - hspec
