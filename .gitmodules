@@ -1,6 +1,3 @@
 [submodule "javascript/skyway/skyway-js-skeleton"]
 	path = javascript/skyway/skyway-js-skeleton
 	url = https://github.com/skyway/skyway-js-skeleton.git
-[submodule "cpp/calc/lib/googletest"]
-	path = cpp/calc/lib/googletest
-	url = https://github.com/google/googletest.git
