@@ -38,3 +38,5 @@ spec = do
             Calc.unchurch (Calc.c_mul a b) `shouldBe` 16
         it "exponent two church number" $ do
             Calc.unchurch (Calc.c_exp a b) `shouldBe` 64
+--        it "exponent two church number" $ do
+--            Calc.unchurch (Calc.c_sub a b) `shouldBe` 6

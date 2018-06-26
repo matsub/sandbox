@@ -1,7 +1,7 @@
 module Calc (
-    c_if, c_iszero, c_leq,
-    c_succ, c_pred,
     church, unchurch,
+    c_succ, c_pred,
+    c_if, c_iszero, c_leq,
     c_add, c_mul, c_exp, c_sub,
     -- c_div, c_rem
     ) where
