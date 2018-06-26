@@ -1,0 +1,10 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: alpine:3.6
+
+    steps:
+      - run:
+          name: hello
+          command: echo "Hello, world"
