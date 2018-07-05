@@ -1,4 +1,5 @@
 <script>
 ws = new WebSocket("ws://localhost:8001/ws")
 ws.onmessage = e => console.log(e)
+ws.onclose = e => console.log(e)
 </script>
