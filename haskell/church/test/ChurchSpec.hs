@@ -26,17 +26,23 @@ spec = do
 
         it "iszero" $ do
             Church._if(Church.iszero b)(10)(0) `shouldBe` 10
+        it "leq" $ do
+            Church._if(Church.leq a b)(10)(0) `shouldBe` 0
 
 
     describe "church numeral calculus" $ do
         let a = church 8
-        let b = church 2
+        let b = church 3
 
         it "add two church number" $ do
-            unchurch (Church.add a b) `shouldBe` 10
+            unchurch (Church.add a b) `shouldBe` 11
         it "multiply two church number" $ do
-            unchurch (Church.mul a b) `shouldBe` 16
+            unchurch (Church.mul a b) `shouldBe` 24
         it "exponent two church number" $ do
-            unchurch (Church.exp a b) `shouldBe` 64
+            unchurch (Church.exp a b) `shouldBe` 512
         it "subtract two church number" $ do
-            unchurch (Church.sub a b) `shouldBe` 6
+            unchurch (Church.sub a b) `shouldBe` 5
+        it "divide two church number" $ do
+            unchurch (Church.div a b) `shouldBe` 2
+        it "modulus operation for church number" $ do
+            unchurch (Church.mod a b) `shouldBe` 2

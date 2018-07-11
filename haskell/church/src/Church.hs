@@ -3,9 +3,9 @@
 module Church (
     church, unchurch,
     succ, pred,
-    _if, iszero, --leq,
+    _if, iszero, leq,
     add, mul, exp, sub,
-    -- div, mod
+    div, mod
     ) where
 import Prelude hiding (succ, pred, exp, div, mod)
 
@@ -15,7 +15,7 @@ type Number = forall f. (f -> f) -> f -> f
 newtype Church = Church { churched :: Number }
 
 
--- converter
+-- Church numeral
 church :: Integer -> Church
 church 0 = zero
 church n = succ (church (n-1))
@@ -61,11 +61,16 @@ exp m n = Church $ (churched n) (churched m)
 sub :: Church -> Church -> Church
 sub m n = churched n pred m
 
---div = \m -> \n -> _if (leq n m) (succ (div (sub m n) n)) zero
---mod = \m -> \n -> _if (leq n m) (mod (sub m n) n) zero
+div :: Church -> Church -> Church
+div m n = _if (leq n m) (succ (div (sub m n) n)) zero
+
+mod :: Church -> Church -> Church
+mod m n = _if (leq n m) (mod (sub m n) n) m
 
 
 -- logic
 iszero :: Church -> Boolean
 iszero n = churched n (\x -> false) true
---leq m n = iszero(sub m n)
+
+leq :: Church -> Church -> Boolean
+leq m n = iszero(sub m n)
