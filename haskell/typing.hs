@@ -1,12 +1,9 @@
 {-# LANGUAGE RankNTypes #-}
 
-type F = forall a. a -> a
-f :: F
-f x = x
+newtype Type = Type { foo :: Integer }
 
-type G = F -> F
-g :: G
-g fnc x = fnc x
+f :: Type -> Integer
+f x = foo x
 
 main = do
-    print $ g f 10
+    print $ f (Type 10)
