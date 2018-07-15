@@ -59,6 +59,6 @@ spec = do
         it "cdr church list" $ do
             car (cdr l) `shouldBe` 10
             car (cdr (cdr l)) `shouldBe` 1
-        it "pick tail of church list" $ do
+        it "isnil" $ do
             Church._if (isnil nil)(True)(False) `shouldBe` True
             Church._if (isnil l)(True)(False) `shouldBe` False
