@@ -35,3 +35,6 @@ leq m n = iszero (sub m n)
 -- general algorithms
 gcd :: Number -> Number -> Number
 gcd a b = _if (iszero b) a (gcd b (mod a b))
+
+fact :: Number -> Number
+fact n = _if (iszero n) (succ zero) (mul n (fact (pred n)))

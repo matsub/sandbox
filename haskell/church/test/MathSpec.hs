@@ -39,10 +39,14 @@ spec = do
 
 
     describe "general algorithms" $ do
-        let a1 = church 12
-        let a2 = church 24
+        let a1 = church 4
+        let a2 = church 8
         let b = church 64
 
         it "gcd" $ do
             unchurch (Math.gcd a1 b) `shouldBe` 4
             unchurch (Math.gcd a2 b) `shouldBe` 8
+
+        it "fact" $ do
+            unchurch (Math.fact a1) `shouldBe` 24
+            unchurch (Math.fact a2) `shouldBe` 40320
