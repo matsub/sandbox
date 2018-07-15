@@ -25,54 +25,54 @@ false = Boolean $ \x -> \y -> y
 
 
 -- Church numeral
-newtype Church = Church { churched :: forall f. (f -> f) -> f -> f }
+newtype Number = Number (forall f. (f -> f) -> f -> f)
 
-church :: Integer -> Church
+church :: Integer -> Number
 church 0 = zero
 church n = succ (church (n-1))
 
-unchurch :: Church -> Integer
-unchurch n = churched n (+ 1) 0
+unchurch :: Number -> Integer
+unchurch (Number n) = n (+ 1) 0
 
 
 -- integer
-zero :: Church
-zero = Church $ \f -> \x -> x
+zero :: Number
+zero = Number $ \f -> \x -> x
 
 
 -- operator
-succ :: Church -> Church
-succ n = Church $ \f -> \x -> f (churched n f x)
+succ :: Number -> Number
+succ (Number n) = Number $ \f -> \x -> f (n f x)
 
-pred :: Church -> Church
-pred n = Church $ \f -> \x -> churched n (\g -> \h -> h (g f)) (\u -> x) (\u -> u)
+pred :: Number -> Number
+pred (Number n) = Number $ \f -> \x -> n (\g -> \h -> h (g f)) (\u -> x) (\u -> u)
 
 
 -- calculus on church numeral
-add :: Church -> Church -> Church
-add m n = Church $ \f -> \x -> churched m f (churched n f x)
+add :: Number -> Number -> Number
+add (Number m) (Number n) = Number $ \f -> \x -> m f (n f x)
 
-mul :: Church -> Church -> Church
-mul m n = Church $ \f -> churched m (churched n f)
+mul :: Number -> Number -> Number
+mul (Number m) (Number n) = Number $ \f -> m (n f)
 
-exp :: Church -> Church -> Church
-exp m n = Church $ (churched n) (churched m)
+exp :: Number -> Number -> Number
+exp (Number m) (Number n) = Number $ n m
 
-sub :: Church -> Church -> Church
-sub m n = churched n pred m
+sub :: Number -> Number -> Number
+sub m (Number n) = n pred m
 
-div :: Church -> Church -> Church
+div :: Number -> Number -> Number
 div m n = _if (leq n m) (succ (div (sub m n) n)) zero
 
-mod :: Church -> Church -> Church
+mod :: Number -> Number -> Number
 mod m n = _if (leq n m) (mod (sub m n) n) m
 
 
 -- logic
-iszero :: Church -> Boolean
-iszero n = churched n (\x -> false) true
+iszero :: Number -> Boolean
+iszero (Number n) = n (\x -> false) true
 
-leq :: Church -> Church -> Boolean
+leq :: Number -> Number -> Boolean
 leq m n = iszero(sub m n)
 
 
