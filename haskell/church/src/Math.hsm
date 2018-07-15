@@ -1,8 +1,0 @@
-module Math (
-    gcd
-    ) where
-
-import Church
-
-gcd a b = gcd(b, a%b) if b else a
-gcd a b = _if (b)(gcd b (mod a b))()

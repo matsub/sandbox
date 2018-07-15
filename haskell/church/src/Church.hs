@@ -1,6 +1,7 @@
 {-# LANGUAGE RankNTypes #-}
 
 module Church (
+    Boolean, Number, List,
     church, unchurch,
     succ, pred,
     _if, iszero, leq,
@@ -35,7 +36,7 @@ unchurch :: Number -> Integer
 unchurch (Number n) = n (+ 1) 0
 
 
--- integer
+-- natural number
 zero :: Number
 zero = Number $ \f -> \x -> x
 
