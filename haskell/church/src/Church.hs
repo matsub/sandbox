@@ -105,6 +105,6 @@ car :: List a -> a
 car (List xs) = xs (\x -> \y -> x) undefined
 
 cdr :: List a -> List a
-cdr (List xs) = first (xs ss nn)
-    where nn = pair nil nil
-          ss a p = pair (second p) (cons a (second p))
+cdr (List xs) = first (xs seconds ns)
+    where ns = pair nil nil
+          seconds a p = pair (second p) (cons a (second p))
