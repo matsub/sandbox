@@ -25,12 +25,12 @@ spec = do
         let b = church 0
 
         it "iszero" $ do
-            Church._if(Church.iszero a)(True)(False) `shouldBe` False
-            Church._if(Church.iszero b)(True)(False) `shouldBe` True
+            _if (iszero a) True False  `shouldBe` False
+            _if (iszero b) True False  `shouldBe` True
         it "leq" $ do
-            Church._if(Church.leq a b)(True)(False) `shouldBe` False
-            Church._if(Church.leq b a)(True)(False) `shouldBe` True
-            Church._if(Church.leq a a)(True)(False) `shouldBe` True
+            _if (leq a b) True False `shouldBe` False
+            _if (leq b a) True False `shouldBe` True
+            _if (leq a a) True False `shouldBe` True
 
 
     describe "church numeral calculus" $ do
@@ -60,5 +60,5 @@ spec = do
             car (cdr l) `shouldBe` 10
             car (cdr (cdr l)) `shouldBe` 1
         it "isnil" $ do
-            Church._if (isnil nil)(True)(False) `shouldBe` True
-            Church._if (isnil l)(True)(False) `shouldBe` False
+            _if (isnil nil) True False `shouldBe` True
+            _if (isnil l) True False `shouldBe` False

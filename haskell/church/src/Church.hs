@@ -73,7 +73,7 @@ iszero :: Number -> Boolean
 iszero (Number n) = n (\x -> false) true
 
 leq :: Number -> Number -> Boolean
-leq m n = iszero(sub m n)
+leq m n = iszero (sub m n)
 
 
 -- pair
