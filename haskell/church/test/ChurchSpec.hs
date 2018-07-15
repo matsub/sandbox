@@ -25,9 +25,12 @@ spec = do
         let b = church 0
 
         it "iszero" $ do
-            Church._if(Church.iszero b)(10)(0) `shouldBe` 10
+            Church._if(Church.iszero a)(True)(False) `shouldBe` False
+            Church._if(Church.iszero b)(True)(False) `shouldBe` True
         it "leq" $ do
-            Church._if(Church.leq a b)(10)(0) `shouldBe` 0
+            Church._if(Church.leq a b)(True)(False) `shouldBe` False
+            Church._if(Church.leq b a)(True)(False) `shouldBe` True
+            Church._if(Church.leq a a)(True)(False) `shouldBe` True
 
 
     describe "church numeral calculus" $ do
@@ -46,3 +49,16 @@ spec = do
             unchurch (Church.div a b) `shouldBe` 2
         it "modulus operation for church number" $ do
             unchurch (Church.mod a b) `shouldBe` 2
+
+
+    describe "church list" $ do
+        let l = (cons 100 (cons 10 (cons 1 nil)))
+
+        it "car church list" $ do
+            car l `shouldBe` 100
+        it "cdr church list" $ do
+            car (cdr l) `shouldBe` 10
+            car (cdr (cdr l)) `shouldBe` 1
+        it "pick tail of church list" $ do
+            Church._if (isnil nil)(True)(False) `shouldBe` True
+            Church._if (isnil l)(True)(False) `shouldBe` False
