@@ -1,14 +1,7 @@
 {-# LANGUAGE RankNTypes #-}
 
-module Church (
-    Boolean, Number, List,
-    church, unchurch,
-    succ, pred,
-    _if, iszero, leq,
-    add, mul, exp, sub, div, mod,
-    cons, nil, isnil, car, cdr,
-    ) where
-import Prelude hiding (succ, pred, exp, div, mod, map)
+module Primitive where
+import Prelude hiding (succ, pred)
 
 
 
@@ -36,45 +29,15 @@ unchurch :: Number -> Integer
 unchurch (Number n) = n (+ 1) 0
 
 
--- natural number
+-- natural number according to Peano's axiom
 zero :: Number
 zero = Number $ \f -> \x -> x
 
-
--- operator
 succ :: Number -> Number
 succ (Number n) = Number $ \f -> \x -> f (n f x)
 
 pred :: Number -> Number
 pred (Number n) = Number $ \f -> \x -> n (\g -> \h -> h (g f)) (\u -> x) (\u -> u)
-
-
--- calculus on church numeral
-add :: Number -> Number -> Number
-add (Number m) (Number n) = Number $ \f -> \x -> m f (n f x)
-
-mul :: Number -> Number -> Number
-mul (Number m) (Number n) = Number $ \f -> m (n f)
-
-exp :: Number -> Number -> Number
-exp (Number m) (Number n) = Number $ n m
-
-sub :: Number -> Number -> Number
-sub m (Number n) = n pred m
-
-div :: Number -> Number -> Number
-div m n = _if (leq n m) (succ (div (sub m n) n)) zero
-
-mod :: Number -> Number -> Number
-mod m n = _if (leq n m) (mod (sub m n) n) m
-
-
--- logic
-iszero :: Number -> Boolean
-iszero (Number n) = n (\x -> false) true
-
-leq :: Number -> Number -> Boolean
-leq m n = iszero (sub m n)
 
 
 -- pair

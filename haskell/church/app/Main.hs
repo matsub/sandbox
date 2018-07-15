@@ -1,10 +1,11 @@
 module Main where
 
-import Church
+import Primitive
+import Math
 
 main :: IO ()
 main = do
     let a = church 3
     let b = church 5
-    let sum = Church.add a b
+    let sum = Math.add a b
     print(unchurch sum)
