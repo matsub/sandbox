@@ -1,0 +1,16 @@
+[package]
+name = "neon-thing"
+version = "0.1.0"
+authors = ["matsub <matsub.rk@gmail.com>"]
+license = "MIT"
+build = "build.rs"
+
+[lib]
+name = "neon_thing"
+crate-type = ["dylib"]
+
+[build-dependencies]
+neon-build = "0.1.23"
+
+[dependencies]
+neon = "0.1.23"
