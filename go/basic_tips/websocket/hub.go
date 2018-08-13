@@ -4,11 +4,8 @@ package main
 // clients.
 type Hub struct {
 	clients map[*Client]bool
-
 	broadcast chan []byte
-
 	join chan *Client
-
 	leave chan *Client
 }
 
