@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from . import module
+from . import baz
 
-__all__ = [module]
+def f():
+    return baz.g()
