@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"../database"
-	"../models"
+	"matsub/sandbox/go/gin/database"
+	"matsub/sandbox/go/gin/models"
 )
 
 func CreateTodo(c *gin.Context) {

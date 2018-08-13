@@ -1,9 +1,9 @@
 package main
 
 import (
-	"./database"
-	"./models"
-	"./routes"
+	"matsub/sandbox/go/gin/database"
+	"matsub/sandbox/go/gin/models"
+	"matsub/sandbox/go/gin/routes"
 )
 
 func main() {
