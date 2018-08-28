@@ -69,5 +69,5 @@ def call_AsyncInstance():
 
 if __name__ == '__main__':
     # call_hello_world()
-    # call_sum_of()
-    call_AsyncInstance()
+    call_sum_of()
+    # call_AsyncInstance()
