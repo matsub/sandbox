@@ -1,0 +1,7 @@
+[
+    {"start": 0, "end": 4, "subject": "alpha"},
+    {"start": 6, "end": 10, "subject": "beta"},
+    {"start": 3, "end": 7, "subject": "charlie"},
+    {"start": 4, "end": 7, "subject": "delta"},
+    {"start": 2, "end": 4, "subject": "echo"}
+]

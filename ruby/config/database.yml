@@ -1,4 +1,0 @@
-# config/database.yml
-development:
-  adapter: sqlite3
-  database: db/my_app.db

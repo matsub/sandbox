@@ -1,6 +1,0 @@
-# Rakefile
-require 'sinatra/reloader'
-require 'sinatra/activerecord'
-require 'sinatra/activerecord/rake'
-
-require './app'
