@@ -1,0 +1,19 @@
+{
+  "name": "nightwatch",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "nightwatch",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "chromedriver": "^2.43.1",
+    "eslint": "^5.8.0",
+    "nightwatch": "^0.9.21",
+    "parcel": "^1.10.3",
+    "selenium-server": "^3.141.0"
+  }
+}
