@@ -1,14 +1,7 @@
-// This is a comment, and is ignored by the compiler
-// You can test this code by clicking the "Run" button over there ->
-// or if you prefer to use your keyboard, you can use the "Ctrl + Enter" shortcut
-
-// This code is editable, feel free to hack it!
-// You can always return to the original code by clicking the "Reset" button ->
-
-// This is the main function
 fn main() {
-    // Statements here are executed when the compiled binary is called
-
-    // Print text to the console
     println!("Hello World!");
+    let xs = [0x00, 0x01, 0x00, 0x00, 0x21, 0x12, 0xa4, 0x42, 0xed, 0x19, 0xe9, 0x7e, 0xd7, 0x0b, 0x33, 0x1b, 0xb0, 0xdc, 0x90, 0xab];
+
+    println!("{:?}...{:?}", &xs[4..8], [0x21, 0x12, 0xa4, 0x42]);
+    println!("{}", &xs[4..8] == [0x21, 0x12, 0xa4, 0x42]);
 }
